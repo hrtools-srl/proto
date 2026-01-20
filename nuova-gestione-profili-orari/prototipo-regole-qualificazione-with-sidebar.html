@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regole di Qualificazione - Prototipo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #000051 0%, #2d1b69 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 0;
+            z-index: 1000;
+        }
+
+        .sidebar-logo {
+            padding: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .sidebar-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .sidebar-link i {
+            width: 24px;
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-submenu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .sidebar-submenu.open {
+            max-height: 500px;
+        }
+
+        .sidebar-submenu-link {
+            display: block;
+            padding: 0.75rem 1.5rem 0.75rem 3.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-submenu-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .sidebar-submenu-link.active {
+            background-color: #1db954;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .container-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .badge-changed {
+            background-color: #ffc107;
+            color: #000;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            margin-left: 0.5rem;
+            vertical-align: middle;
+        }
+
+        .giorni-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            min-height: 3rem;
+            background-color: #f8f9fa;
+        }
+
+        .giorno-chip {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .giorno-chip:hover {
+            background-color: #dee2e6;
+        }
+
+        .giorno-chip.selected {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="font-size: 2rem;"></i>
+            <span class="sidebar-logo-text">sicuro.it</span>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Foglio presenze</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-th"></i>
+                    <span>Monitora</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="toggleSubmenu('profili-orari')">
+                    <i class="fas fa-clock"></i>
+                    <span>Profili orari</span>
+                </div>
+                <ul class="sidebar-submenu open" id="profili-orari">
+                    <li>
+                        <a href="prototipo-profilo-settimanale-with-sidebar.html" class="sidebar-submenu-link">
+                            Profili settimanali
+                        </a>
+                    </li>
+                    <li>
+                        <a href="prototipo-profilo-giornaliero-with-sidebar.html" class="sidebar-submenu-link">
+                            Profili giornalieri
+                        </a>
+                    </li>
+                    <li>
+                        <a href="prototipo-regole-qualificazione-with-sidebar.html" class="sidebar-submenu-link active">
+                            Regole di qualificazione
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-random"></i>
+                    <span>Flussi e richieste</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Altro</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-umbrella-beach"></i>
+                    <span>Festività</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Ratei di maturazione</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-building"></i>
+                    <span>Organizzazione</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-cog"></i>
+                    <span>Impostazioni</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <small class="text-muted">Martedì, 20 gennaio 2026 ⏰ 10:42</small>
+                </div>
+                <div>
+                    <span class="me-3">IT 🇮🇹</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-main">
+            <h2 class="mb-4">Crea Regola di qualificazione</h2>
+
+            <!-- Card principale -->
+            <div class="card">
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <!-- Nome -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="text" class="form-control" id="nome" value="efwefwef" placeholder="Nome">
+                                <label for="nome">Nome</label>
+                            </div>
+                        </div>
+
+                        <!-- Tipo di giustificativo -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="tipo_giustificativo">
+                                    <option value="" selected>Seleziona</option>
+                                    <option value="stra_notte">STRA_NOTTE - Straordinario Notturno</option>
+                                    <option value="stra_fest">STRA_FEST - Straordinario Festivo</option>
+                                    <option value="stra">STRA - Straordinario Ordinario</option>
+                                </select>
+                                <label for="tipo_giustificativo">Tipo di giustificativo</label>
+                            </div>
+                        </div>
+
+                        <!-- Prima delle -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="time" class="form-control" id="prima_delle" value="--:--">
+                                <label for="prima_delle">Prima delle</label>
+                            </div>
+                        </div>
+
+                        <!-- Dopo le -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="time" class="form-control" id="dopo_le" value="--:--">
+                                <label for="dopo_le">Dopo le</label>
+                            </div>
+                        </div>
+
+                        <!-- Durata Slot (min) - MODIFICATO -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="durata_slot" value="0" min="0" step="1" placeholder="Durata Slot (min)">
+                                <label for="durata_slot">
+                                    Durata Slot (min) <span class="badge-changed">MODIFICATO</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Festività -->
+                        <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="festivita" style="width: 3em; height: 1.5em;">
+                                <label class="form-check-label fw-bold" for="festivita">
+                                    Festività
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Giorni -->
+                        <div class="col-12">
+                            <label class="form-label fw-bold">Giorni</label>
+                            <div class="giorni-container" id="giorniContainer">
+                                <span class="giorno-chip" onclick="toggleGiorno(this)" data-day="mon">Lun</span>
+                                <span class="giorno-chip" onclick="toggleGiorno(this)" data-day="tue">Mar</span>
+                                <span class="giorno-chip" onclick="toggleGiorno(this)" data-day="wed">Mer</span>
+                                <span class="giorno-chip" onclick="toggleGiorno(this)" data-day="thu">Gio</span>
+                                <span class="giorno-chip" onclick="toggleGiorno(this)" data-day="fri">Ven</span>
+                                <span class="giorno-chip" onclick="toggleGiorno(this)" data-day="sat">Sab</span>
+                                <span class="giorno-chip" onclick="toggleGiorno(this)" data-day="sun">Dom</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottone Salva -->
+            <div class="row">
+                <div class="col-12 text-end">
+                    <button type="button" class="btn btn-success" onclick="showSaveConfirmation()">
+                        <i class="fa fa-save me-2"></i>Salva
+                    </button>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Prototipo navigabile:</strong> Usa la sidebar a sinistra per navigare tra le pagine dei profili.
+                <br>
+                <strong>Modifica:</strong> Il campo "Durata (min)" è stato rinominato in "Durata Slot (min)" per maggiore chiarezza.
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById(id);
+            submenu.classList.toggle('open');
+        }
+
+        function toggleGiorno(element) {
+            element.classList.toggle('selected');
+        }
+
+        function showSaveConfirmation() {
+            const selectedDays = Array.from(document.querySelectorAll('.giorno-chip.selected'))
+                .map(chip => chip.textContent)
+                .join(', ');
+
+            let message = '✅ Regola di qualificazione salvata con successo!\n\n';
+            if (selectedDays) {
+                message += `Giorni selezionati: ${selectedDays}\n\n`;
+            }
+            message += '(Questo è un prototipo - nessun dato è stato realmente salvato)';
+
+            alert(message);
+        }
+    </script>
+</body>
+</html>
