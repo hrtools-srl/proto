@@ -217,6 +217,37 @@
             opacity: 0.5;
             pointer-events: none;
         }
+
+        .giorni-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            min-height: 3rem;
+            background-color: #f8f9fa;
+        }
+
+        .giorno-chip {
+            background-color: #e9ecef;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .giorno-chip:hover {
+            background-color: #dee2e6;
+        }
+
+        .giorno-chip.selected {
+            background-color: #0d6efd;
+            color: white;
+            border-color: #0d6efd;
+        }
     </style>
 </head>
 <body>
@@ -775,6 +806,56 @@
                 </div>
             </div>
 
+            <!-- Gestione Ritardi -->
+            <div class="card" id="gestioneRitardiSection">
+                <div class="card-header-custom">
+                    <div>
+                        <h5 class="section-title">
+                            <i class="fas fa-user-clock text-danger"></i>
+                            Gestione Ritardi
+                        </h5>
+                        <p class="section-description">
+                            Configura come vengono gestiti e qualificati i ritardi per questo profilo settimanale
+                        </p>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-3">
+                        <!-- Tipo di giustificativo -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="tipo_giustificativo_ritardo">
+                                    <option value="" selected>Seleziona</option>
+                                    <option value="ritardo">RITARDO - Ritardo generico</option>
+                                    <option value="ritardo_giust">RITARDO_GIUST - Ritardo giustificato</option>
+                                    <option value="ritardo_non_giust">RITARDO_NON_GIUST - Ritardo non giustificato</option>
+                                </select>
+                                <label for="tipo_giustificativo_ritardo">Tipo di giustificativo</label>
+                            </div>
+                        </div>
+
+                        <!-- Durata Slot (min) -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="durata_slot_ritardo" value="15" min="1" step="1" placeholder="Durata Slot (min)">
+                                <label for="durata_slot_ritardo">Durata Slot (min)</label>
+                            </div>
+                        </div>
+
+                        <!-- Approssimazione -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="approssimazione_ritardo">
+                                    <option value="eccesso" selected>Per eccesso</option>
+                                    <option value="difetto">Per difetto</option>
+                                </select>
+                                <label for="approssimazione_ritardo">Approssimazione</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Altro -->
             <div class="card" id="assenzeSection">
                 <div class="card-header-custom">
@@ -1000,6 +1081,10 @@
                 content.classList.add('d-none');
                 info.classList.remove('d-none');
             }
+        }
+
+        function toggleGiornoRitardo(element) {
+            element.classList.toggle('selected');
         }
 
         function showSaveConfirmation() {
