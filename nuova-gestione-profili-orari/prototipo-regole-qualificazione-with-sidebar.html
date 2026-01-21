@@ -293,20 +293,6 @@
                             </div>
                         </div>
 
-                        <!-- Tipo di giustificativo -->
-                        <div class="col-12 col-md-6">
-                            <div class="form-floating">
-                                <select class="form-select" id="tipo_giustificativo">
-                                    <option value="">Seleziona</option>
-                                    <option value="0008" selected>Straordinario | 0008</option>
-                                    <option value="0009">Permesso | 0009</option>
-                                    <option value="0010">Ferie | 0010</option>
-                                    <option value="0011">Malattia | 0011</option>
-                                </select>
-                                <label for="tipo_giustificativo">Tipo di giustificativo</label>
-                            </div>
-                        </div>
-
                         <!-- Modalità di applicazione -->
                         <div class="col-12">
                             <div class="border rounded p-3 bg-light">
@@ -348,6 +334,20 @@
                             </div>
                         </div>
 
+                        <!-- Tipo di giustificativo -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="tipo_giustificativo">
+                                    <option value="">Seleziona</option>
+                                    <option value="0008" selected>Straordinario | 0008</option>
+                                    <option value="0009">Permesso | 0009</option>
+                                    <option value="0010">Ferie | 0010</option>
+                                    <option value="0011">Malattia | 0011</option>
+                                </select>
+                                <label for="tipo_giustificativo">Tipo di giustificativo</label>
+                            </div>
+                        </div>
+
                         <!-- Durata Slot (min) / Ore da aggiungere (min) -->
                         <div class="col-12 col-md-6">
                             <div class="form-floating">
@@ -367,6 +367,8 @@
                                         <span class="giorno-chip selected" onclick="toggleGiorno(this)" data-day="wed">Mer</span>
                                         <span class="giorno-chip selected" onclick="toggleGiorno(this)" data-day="thu">Gio</span>
                                         <span class="giorno-chip selected" onclick="toggleGiorno(this)" data-day="fri">Ven</span>
+                                        <span class="giorno-chip selected" onclick="toggleGiorno(this)" data-day="sat">Sab</span>
+                                        <span class="giorno-chip selected" onclick="toggleGiorno(this)" data-day="sun">Dom</span>
                                     </div>
                                 </div>
                                 <div class="col-12 col-lg-3 d-flex justify-content-center">

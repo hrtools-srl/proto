@@ -497,21 +497,23 @@
                 </div>
             </div>
 
-            <!-- Tolleranze Timbrature Ingresso/Uscita (solo per Fisso) -->
+            <!-- Tolleranze Timbrature -->
             <div class="card" id="tolleranzeSection">
                 <div class="card-header-custom">
                     <div>
                         <h5 class="section-title">
                             <i class="fas fa-clock-rotate-left text-info"></i>
-                            Tolleranze Timbrature Ingresso/Uscita
+                            Tolleranze Timbrature
                             <span class="badge bg-success ms-2">NEW</span>
                         </h5>
                         <p class="section-description">
-                            Definisci le tolleranze per i ritardi e gli anticipi sulle timbrature di ingresso e uscita (solo per tipologia Fisso)
+                            Definisci le tolleranze per i ritardi e gli anticipi sulle timbrature di ingresso, uscita e intermedie (solo per tipologia Fisso)
                         </p>
                     </div>
                 </div>
                 <div class="card-body p-4" id="tolleranzeContent">
+                    <!-- Timbrature Ingresso/Uscita -->
+                    <h6 class="fw-bold mb-3">Ingresso/Uscita</h6>
                     <div class="row g-3 mb-3">
                         <div class="col-12 col-md-6">
                             <div class="form-floating">
@@ -527,7 +529,7 @@
                         </div>
                     </div>
 
-                    <div class="row g-3">
+                    <div class="row g-3 mb-4 pb-3 border-bottom">
                         <div class="col-12 col-md-6">
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="anticipo_uscita" value="0" min="0" step="1" placeholder="Anticipo timbratura uscita (min)">
@@ -538,6 +540,49 @@
                             <div class="form-floating">
                                 <input type="number" class="form-control" id="ritardo_uscita" value="0" min="0" step="1" placeholder="Ritardo timbratura uscita (min)">
                                 <label for="ritardo_uscita">Ritardo timbratura uscita (min)</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Timbrature Intermedie -->
+                    <div class="mb-3 pb-3 border-bottom">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="attiva_timbrature_intermedie" onchange="toggleTimbratureIntermedie()">
+                            <label class="form-check-label switch-label" for="attiva_timbrature_intermedie">
+                                Attiva timbrature intermedie
+                            </label>
+                        </div>
+                    </div>
+
+                    <div id="timbratureIntermedieFields" class="d-none">
+                        <h6 class="fw-bold mb-3">Pausa</h6>
+                        <div class="row g-3 mb-3">
+                            <div class="col-12 col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="anticipo_inizio_intermedia" value="0" min="0" step="1" placeholder="Anticipo inizio pausa (min)">
+                                    <label for="anticipo_inizio_intermedia">Anticipo inizio pausa (min)</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="ritardo_inizio_intermedia" value="0" min="0" step="1" placeholder="Ritardo inizio pausa (min)">
+                                    <label for="ritardo_inizio_intermedia">Ritardo inizio pausa (min)</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="anticipo_fine_intermedia" value="0" min="0" step="1" placeholder="Anticipo fine pausa (min)">
+                                    <label for="anticipo_fine_intermedia">Anticipo fine pausa (min)</label>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6">
+                                <div class="form-floating">
+                                    <input type="number" class="form-control" id="ritardo_fine_intermedia" value="0" min="0" step="1" placeholder="Ritardo fine pausa (min)">
+                                    <label for="ritardo_fine_intermedia">Ritardo fine pausa (min)</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -589,66 +634,6 @@
                                     <option value="difetto">Per difetto</option>
                                 </select>
                                 <label for="approssimazione_ritardo">Approssimazione</label>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Timbrature Intermedie -->
-            <div class="card" id="timbratureIntermedieSection">
-                <div class="card-header-custom">
-                    <div>
-                        <h5 class="section-title">
-                            <i class="fas fa-clock-rotate-left text-info"></i>
-                            Timbrature Intermedie
-                            <span class="badge bg-success ms-2">NEW</span>
-                        </h5>
-                        <p class="section-description">
-                            Definisci le tolleranze per le timbrature intermedie (inizio e fine pausa)
-                        </p>
-                    </div>
-                </div>
-                <div class="card-body p-4" id="timbratureIntermedieContent">
-                    <!-- Flag Attiva timbrature intermedie -->
-                    <div class="mb-4 pb-3 border-bottom">
-                        <div class="form-check form-switch">
-                            <input class="form-check-input" type="checkbox" id="attiva_timbrature_intermedie" onchange="toggleTimbratureIntermedie()">
-                            <label class="form-check-label switch-label" for="attiva_timbrature_intermedie">
-                                Attiva timbrature intermedie
-                            </label>
-                        </div>
-                    </div>
-
-                    <!-- 4 campi per timbrature intermedie -->
-                    <div id="timbratureIntermedieFields" class="d-none">
-                        <div class="row g-3 mb-3">
-                            <div class="col-12 col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control" id="anticipo_inizio_intermedia" value="0" min="0" step="1" placeholder="Anticipo inizio timbratura intermedia (min)">
-                                    <label for="anticipo_inizio_intermedia">Anticipo inizio timbratura intermedia (min)</label>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control" id="ritardo_inizio_intermedia" value="0" min="0" step="1" placeholder="Ritardo inizio timbratura intermedia (min)">
-                                    <label for="ritardo_inizio_intermedia">Ritardo inizio timbratura intermedia (min)</label>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="row g-3">
-                            <div class="col-12 col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control" id="anticipo_fine_intermedia" value="0" min="0" step="1" placeholder="Anticipo fine timbratura intermedia (min)">
-                                    <label for="anticipo_fine_intermedia">Anticipo fine timbratura intermedia (min)</label>
-                                </div>
-                            </div>
-                            <div class="col-12 col-md-6">
-                                <div class="form-floating">
-                                    <input type="number" class="form-control" id="ritardo_fine_intermedia" value="0" min="0" step="1" placeholder="Ritardo fine timbratura intermedia (min)">
-                                    <label for="ritardo_fine_intermedia">Ritardo fine timbratura intermedia (min)</label>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -849,7 +834,6 @@
             const verificaSection = document.getElementById('verificaSection');
             const checkoutSection = document.getElementById('checkoutSection');
             const tolleranzeSection = document.getElementById('tolleranzeSection');
-            const timbratureIntermedieSection = document.getElementById('timbratureIntermedieSection');
             const presenceSection = document.querySelector('.card:has(#presenceRulesContent)');
             const straordinariSection = document.querySelector('.card:has(#straordinariContent)');
             const smartworkingSection = document.querySelector('.card:has(#smartworkingContent)');
@@ -861,14 +845,14 @@
             // Disabilita Verifiche Checkout, Regole presenza e Smartworking se "Presenza"
             const shouldDisablePresence = (tipologia === 'presence');
 
-            // Tolleranze e Timbrature Intermedie attive solo per "Fisso"
+            // Tolleranze attive solo per "Fisso"
             const shouldEnableTolleranze = (tipologia === 'fixed');
 
             // Gestione Ritardi attiva solo per "Fisso" e "Flessibile"
             const shouldEnableGestioneRitardi = (tipologia === 'fixed' || tipologia === 'flexible');
 
             // Reset di tutte le sezioni prima
-            [verificaSection, checkoutSection, tolleranzeSection, timbratureIntermedieSection, presenceSection, straordinariSection, smartworkingSection, gestioneRitardiSection].forEach(section => {
+            [verificaSection, checkoutSection, tolleranzeSection, presenceSection, straordinariSection, smartworkingSection, gestioneRitardiSection].forEach(section => {
                 if (section) {
                     section.classList.remove('disabled-section');
                     section.style.opacity = '1';
@@ -878,7 +862,7 @@
 
             // Disabilita tutto per "No orario"
             if (tipologia === 'no_schedule') {
-                [verificaSection, tolleranzeSection, timbratureIntermedieSection, presenceSection, straordinariSection, smartworkingSection, gestioneRitardiSection].forEach(section => {
+                [verificaSection, tolleranzeSection, presenceSection, straordinariSection, smartworkingSection, gestioneRitardiSection].forEach(section => {
                     if (section) {
                         section.classList.add('disabled-section');
                         section.style.opacity = '0.5';
@@ -888,7 +872,7 @@
             }
             // Disabilita tutto per "Presenza Automatica"
             else if (tipologia === 'automatic_presence') {
-                [verificaSection, tolleranzeSection, timbratureIntermedieSection, presenceSection, straordinariSection, smartworkingSection, gestioneRitardiSection].forEach(section => {
+                [verificaSection, tolleranzeSection, presenceSection, straordinariSection, smartworkingSection, gestioneRitardiSection].forEach(section => {
                     if (section) {
                         section.classList.add('disabled-section');
                         section.style.opacity = '0.5';
@@ -898,7 +882,7 @@
             }
             // Disabilita solo alcune sezioni per "Presenza"
             else if (shouldDisablePresence) {
-                [checkoutSection, tolleranzeSection, timbratureIntermedieSection, presenceSection, straordinariSection, smartworkingSection, gestioneRitardiSection].forEach(section => {
+                [checkoutSection, tolleranzeSection, presenceSection, straordinariSection, smartworkingSection, gestioneRitardiSection].forEach(section => {
                     if (section) {
                         section.classList.add('disabled-section');
                         section.style.opacity = '0.5';
@@ -906,17 +890,12 @@
                     }
                 });
             }
-            // Per tutti gli altri casi (incluso "Flessibile"), disabilita Tolleranze e Timbrature Intermedie se non è "Fisso"
+            // Per tutti gli altri casi (incluso "Flessibile"), disabilita Tolleranze se non è "Fisso"
             else if (!shouldEnableTolleranze) {
                 if (tolleranzeSection) {
                     tolleranzeSection.classList.add('disabled-section');
                     tolleranzeSection.style.opacity = '0.5';
                     tolleranzeSection.style.pointerEvents = 'none';
-                }
-                if (timbratureIntermedieSection) {
-                    timbratureIntermedieSection.classList.add('disabled-section');
-                    timbratureIntermedieSection.style.opacity = '0.5';
-                    timbratureIntermedieSection.style.pointerEvents = 'none';
                 }
             }
 
