@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Profilo Giornaliero - Prototipo</title>
+    <title>Regole di Presenza - Prototipo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <style>
@@ -125,18 +125,23 @@
             margin-bottom: 1.5rem;
         }
 
-        .removed-note {
-            background-color: #fff3cd;
-            border: 1px solid #ffc107;
-            color: #856404;
-            padding: 1rem;
-            border-radius: 6px;
-            margin-bottom: 1.5rem;
+        .card-header-custom {
+            background-color: white;
+            border-bottom: 1px solid #e9ecef;
+            padding: 1.5rem;
         }
 
-        .removed-note a {
-            color: #004085;
-            text-decoration: underline;
+        .section-title {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .section-description {
+            margin: 0.5rem 0 0 0;
+            font-size: 0.9rem;
+            color: #6c757d;
         }
     </style>
 </head>
@@ -175,7 +180,7 @@
                         </a>
                     </li>
                     <li>
-                        <a href="prototipo-profilo-giornaliero-with-sidebar.html" class="sidebar-submenu-link active">
+                        <a href="prototipo-profilo-giornaliero-with-sidebar.html" class="sidebar-submenu-link">
                             Profili giornalieri
                         </a>
                     </li>
@@ -229,7 +234,7 @@
                 </div>
                 <ul class="sidebar-submenu open" id="impostazioni">
                     <li>
-                        <a href="prototipo-regole-presenza-with-sidebar.html" class="sidebar-submenu-link">
+                        <a href="prototipo-regole-presenza-with-sidebar.html" class="sidebar-submenu-link active">
                             Regole di presenza
                         </a>
                     </li>
@@ -243,7 +248,7 @@
         <div class="header">
             <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <small class="text-muted">Lunedì, 19 gennaio 2026 ⏰ 18:50</small>
+                    <small class="text-muted">Martedì, 21 gennaio 2026 ⏰ 10:42</small>
                 </div>
                 <div>
                     <span class="me-3">IT 🇮🇹</span>
@@ -252,68 +257,33 @@
         </div>
 
         <div class="container-main">
-            <h2 class="mb-4">Modifica Profilo giornaliero</h2>
+            <h2 class="mb-4">Regole di presenza</h2>
 
-            <!-- Nota rimozione campo -->
-            <div class="removed-note">
-                <i class="fas fa-info-circle me-2"></i>
-                <strong>Nota:</strong> Il campo "Tipologia" (Fisso/Flessibile/Presenza) è stato spostato nella gestione del Profilo settimanale.
-                <a href="prototipo-profilo-settimanale-with-sidebar.html">
-                    Visualizza profilo settimanale →
-                </a>
-            </div>
-
-            <!-- Card principale -->
+            <!-- Card Altro -->
             <div class="card">
+                <div class="card-header-custom">
+                    <div>
+                        <h5 class="section-title">
+                            <i class="fas fa-cog text-secondary"></i>
+                            Altro
+                        </h5>
+                        <p class="section-description">
+                            Configurazione di altri parametri per le regole di presenza
+                        </p>
+                    </div>
+                </div>
                 <div class="card-body p-4">
                     <div class="row g-3">
-                        <!-- Nome -->
                         <div class="col-12 col-md-6">
                             <div class="form-floating">
-                                <input type="text" class="form-control" id="nome" value="test" placeholder="Nome">
-                                <label for="nome">Nome</label>
+                                <input type="number" class="form-control" id="richiesta_malattia_retroattiva" value="2" min="0" step="1" placeholder="Richiesta di malattia retroattiva (giorni)">
+                                <label for="richiesta_malattia_retroattiva">Richiesta di malattia retroattiva (giorni)</label>
                             </div>
                         </div>
-
-                        <!-- Notturno -->
-                        <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="notturno" style="width: 1.5em; height: 1.5em;">
-                                <label class="form-check-label fw-bold" for="notturno">
-                                    Notturno
-                                </label>
-                            </div>
-                        </div>
-
-                        <!-- Start time -->
                         <div class="col-12 col-md-6">
                             <div class="form-floating">
-                                <input type="time" class="form-control" id="start_time" value="09:00">
-                                <label for="start_time">Start time</label>
-                            </div>
-                        </div>
-
-                        <!-- End time -->
-                        <div class="col-12 col-md-6">
-                            <div class="form-floating">
-                                <input type="time" class="form-control" id="end_time" value="13:00">
-                                <label for="end_time">End time</label>
-                            </div>
-                        </div>
-
-                        <!-- Fai una pausa -->
-                        <div class="col-12 col-md-6">
-                            <div class="form-floating">
-                                <input type="time" class="form-control" id="pausa_inizio" value="14:00">
-                                <label for="pausa_inizio">Fai una pausa</label>
-                            </div>
-                        </div>
-
-                        <!-- Termina pausa -->
-                        <div class="col-12 col-md-6">
-                            <div class="form-floating">
-                                <input type="time" class="form-control" id="pausa_fine" value="18:00">
-                                <label for="pausa_fine">Termina pausa</label>
+                                <input type="number" class="form-control" id="arrotondamento_timbrature" value="0" min="0" step="1" placeholder="Arrotondamento timbrature (min)">
+                                <label for="arrotondamento_timbrature">Arrotondamento timbrature (min)</label>
                             </div>
                         </div>
                     </div>
