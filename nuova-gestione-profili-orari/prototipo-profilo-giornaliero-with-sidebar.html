@@ -138,6 +138,27 @@
             color: #004085;
             text-decoration: underline;
         }
+
+        .card-header-custom {
+            background-color: transparent;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-description {
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin: 0.25rem 0 0;
+        }
     </style>
 </head>
 <body>
@@ -166,22 +187,48 @@
             <li class="sidebar-item">
                 <div class="sidebar-link" onclick="toggleSubmenu('profili-orari')">
                     <i class="fas fa-clock"></i>
-                    <span>Profili orari</span>
+                    <span>Gestione presenze</span>
                 </div>
-                <ul class="sidebar-submenu open" id="profili-orari">
-                    <li>
-                        <a href="prototipo-profilo-settimanale-with-sidebar.html" class="sidebar-submenu-link">
-                            Profili settimanali
+                <ul class="sidebar-submenu open" id="gestione-presenze">
+<li>
+                        <a href="prototipo-elenco-regole-timbratura-with-sidebar.html" class="sidebar-submenu-link">
+                            Regole di Timbratura
                         </a>
                     </li>
                     <li>
-                        <a href="prototipo-profilo-giornaliero-with-sidebar.html" class="sidebar-submenu-link active">
+                        <a href="prototipo-elenco-regole-qualificazione-with-sidebar.html" class="sidebar-submenu-link">
+                            Regole di Qualificazione
+                        </a>
+                    </li>
+                    <li>
+                        <a href="prototipo-elenco-profili-giornalieri-with-sidebar.html" class="sidebar-submenu-link active">
                             Profili giornalieri
                         </a>
                     </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="toggleSubmenu('orari-lavoro')">
+                    <i class="fas fa-clock"></i>
+                    <span>Orari di lavoro</span>
+                </div>
+                <ul class="sidebar-submenu open" id="gestione-presenze">
                     <li>
-                        <a href="prototipo-regole-qualificazione-with-sidebar.html" class="sidebar-submenu-link">
-                            Regole di qualificazione
+                        <a href="prototipo-elenco-profili-settimanali-with-sidebar.html" class="sidebar-submenu-link">
+                            Profili settimanali
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="toggleSubmenu('dipendenti')">
+                    <i class="fas fa-users"></i>
+                    <span>Dipendenti</span>
+                </div>
+                <ul class="sidebar-submenu open" id="dipendenti">
+                    <li>
+                        <a href="prototipo-dipendente-dettaglio-with-sidebar.html" class="sidebar-submenu-link">
+                            Dettaglio dipendente
                         </a>
                     </li>
                 </ul>
@@ -254,15 +301,6 @@
         <div class="container-main">
             <h2 class="mb-4">Modifica Profilo giornaliero</h2>
 
-            <!-- Nota rimozione campo -->
-            <div class="removed-note">
-                <i class="fas fa-info-circle me-2"></i>
-                <strong>Nota:</strong> Il campo "Tipologia" (Fisso/Flessibile/Presenza) è stato spostato nella gestione del Profilo settimanale.
-                <a href="prototipo-profilo-settimanale-with-sidebar.html">
-                    Visualizza profilo settimanale →
-                </a>
-            </div>
-
             <!-- Card principale -->
             <div class="card">
                 <div class="card-body p-4">
@@ -275,13 +313,16 @@
                             </div>
                         </div>
 
-                        <!-- Notturno -->
-                        <div class="col-12 col-md-6 d-flex align-items-center justify-content-center">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="notturno" style="width: 1.5em; height: 1.5em;">
-                                <label class="form-check-label fw-bold" for="notturno">
-                                    Notturno
-                                </label>
+                        <!-- Regola di Timbratura -->
+                        <div class="col-12 col-md-6">
+                            <div class="form-floating">
+                                <select class="form-select" id="regola_timbratura">
+                                    <option value="">Seleziona regola di timbratura</option>
+                                    <option value="regola_standard" selected>Regola Standard</option>
+                                    <option value="regola_flessibile">Regola Flessibile</option>
+                                    <option value="regola_turni">Regola Turni</option>
+                                </select>
+                                <label for="regola_timbratura">Regola di Timbratura</label>
                             </div>
                         </div>
 
@@ -316,6 +357,67 @@
                                 <label for="pausa_fine">Termina pausa</label>
                             </div>
                         </div>
+
+                        <!-- Notturno -->
+                        <div class="col-12 col-md-3 d-flex align-items-center justify-content-center">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="notturno" style="width: 1.5em; height: 1.5em;">
+                                <label class="form-check-label fw-bold" for="notturno">
+                                    Notturno
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Colore -->
+                        <div class="col-12 col-md-3">
+                            <label for="colore" class="form-label fw-bold">Colore</label>
+                            <div class="d-flex align-items-center gap-2">
+                                <input type="color" class="form-control form-control-color" id="colore" value="#28a745" title="Scegli colore">
+                                <span class="text-muted" id="colore_hex">#28a745</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Regole di Qualificazione -->
+            <div class="card">
+                <div class="card-header-custom">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <h5 class="section-title">
+                                <i class="fas fa-star text-warning"></i>
+                                Regole di Qualificazione
+                            </h5>
+                            <p class="section-description">
+                                Aggiungi regole di Qualificazione con priorità (1 = priorità massima)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row g-2 mb-4">
+                        <div class="col-12 col-md-8">
+                            <label class="form-label fw-bold">Seleziona regola</label>
+                            <select class="form-select" id="regola_selector">
+                                <option value="">Seleziona una regola</option>
+                                <option value="straordinario_standard">Straordinario | 0008</option>
+                                <option value="permesso">Permesso | 0009</option>
+                                <option value="ferie">Ferie | 0010</option>
+                            </select>
+                        </div>
+                        <div class="col-12 col-md-4 d-flex align-items-end">
+                            <button type="button" class="btn btn-success btn-sm w-100" onclick="addRegolaRow()">
+                                <i class="fas fa-plus me-1"></i>Aggiungi
+                            </button>
+                        </div>
+                    </div>
+                    <div id="regole_container">
+                        <!-- Le regole aggiunte appariranno qui -->
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle me-2"></i>
+                            Nessuna regola di Qualificazione straordinari assegnata.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -328,24 +430,87 @@
                     </button>
                 </div>
             </div>
-
-            <div class="alert alert-info mt-4">
-                <i class="fas fa-info-circle me-2"></i>
-                <strong>Prototipo navigabile:</strong> Usa la sidebar a sinistra per navigare tra le pagine dei profili.
-            </div>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
+        let regoleCounter = 0;
+
         function toggleSubmenu(id) {
             const submenu = document.getElementById(id);
             submenu.classList.toggle('open');
         }
 
+        function addRegolaRow() {
+            const selector = document.getElementById('regola_selector');
+            const selectedText = selector.options[selector.selectedIndex].text;
+            const selectedValue = selector.value;
+
+            if (!selectedValue) {
+                alert('Seleziona prima una regola');
+                return;
+            }
+
+            const container = document.getElementById('regole_container');
+
+            // Rimuovi messaggio vuoto se presente
+            const emptyAlert = container.querySelector('.alert-info');
+            if (emptyAlert) {
+                emptyAlert.remove();
+            }
+
+            regoleCounter++;
+
+            const rowHtml = `
+                <div class="regola-row" id="regola_${regoleCounter}" style="margin-bottom: 1rem; padding: 1rem; border: 1px solid #dee2e6; border-radius: 6px;">
+                    <div class="row g-3 align-items-center">
+                        <div class="col-12 col-md-6">
+                            <strong>${selectedText}</strong>
+                        </div>
+                        <div class="col-12 col-md-4">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" value="${regoleCounter}" min="1" step="1">
+                                <label>Priorità (1=max)</label>
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2 text-end">
+                            <button type="button" class="btn btn-danger btn-sm" onclick="removeRegola(${regoleCounter})">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            container.insertAdjacentHTML('beforeend', rowHtml);
+            selector.value = '';
+        }
+
+        function removeRegola(id) {
+            const row = document.getElementById('regola_' + id);
+            row.remove();
+
+            // Se non ci sono più regole, mostra messaggio vuoto
+            const container = document.getElementById('regole_container');
+            if (container.children.length === 0) {
+                container.innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Nessuna regola di Qualificazione straordinari assegnata.
+                    </div>
+                `;
+            }
+        }
+
         function showSaveConfirmation() {
             alert('✅ Modifiche salvate con successo!\n\n(Questo è un prototipo - nessun dato è stato realmente salvato)');
         }
+
+        // Update color hex display when color picker changes
+        document.getElementById('colore').addEventListener('input', function(e) {
+            document.getElementById('colore_hex').textContent = e.target.value;
+        });
     </script>
 </body>
 </html>

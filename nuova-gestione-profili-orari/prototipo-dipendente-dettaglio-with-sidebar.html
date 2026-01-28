@@ -1,0 +1,1597 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dettaglio Dipendente - Massimo Aldini - Prototipo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            margin: 0;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #000051 0%, #2d1b69 100%);
+            color: white;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            padding: 0;
+            z-index: 1000;
+        }
+
+        .sidebar-logo {
+            padding: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            display: none;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-item {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .sidebar-link {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            color: white;
+            text-decoration: none;
+            transition: background-color 0.2s;
+            cursor: pointer;
+        }
+
+        .sidebar-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .sidebar-link i {
+            width: 24px;
+            margin-right: 0.75rem;
+            font-size: 1.1rem;
+        }
+
+        .sidebar-submenu {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background-color: rgba(0, 0, 0, 0.2);
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .sidebar-submenu.open {
+            max-height: 500px;
+        }
+
+        .sidebar-submenu-link {
+            display: block;
+            padding: 0.75rem 1.5rem 0.75rem 3.5rem;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: background-color 0.2s;
+        }
+
+        .sidebar-submenu-link:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+        }
+
+        .sidebar-submenu-link.active {
+            background-color: #1db954;
+            color: white;
+            font-weight: 600;
+        }
+
+        /* Main content */
+        .main-content {
+            margin-left: 280px;
+            flex: 1;
+            min-height: 100vh;
+        }
+
+        .header {
+            background-color: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .container-main {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 3rem;
+        }
+
+        .card {
+            border: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .card-header-custom {
+            background-color: transparent;
+            border-bottom: 1px solid #e0e0e0;
+            padding: 1.25rem 1.5rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-description {
+            color: #6c757d;
+            font-size: 0.875rem;
+            margin: 0.25rem 0 0;
+        }
+
+        .btn-save {
+            padding: 0.5rem 2rem;
+            font-weight: 600;
+        }
+
+        /* Tabs */
+        .nav-tabs {
+            border-bottom: 2px solid #dee2e6;
+            margin-bottom: 1.5rem;
+        }
+
+        .nav-tabs .nav-link {
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #6c757d;
+            font-weight: 500;
+            padding: 0.75rem 1.5rem;
+        }
+
+        .nav-tabs .nav-link:hover {
+            border-bottom-color: #1db954;
+            color: #1db954;
+        }
+
+        .nav-tabs .nav-link.active {
+            border-bottom-color: #1db954;
+            color: #1db954;
+            background-color: transparent;
+        }
+
+        /* Calendar styles */
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .calendar-header h4 {
+            margin: 0;
+            font-weight: 600;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .calendar-nav button {
+            border: none;
+            background: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+
+        .calendar-nav button:hover {
+            background-color: #1db954;
+            color: white;
+            transform: scale(1.1);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr) 80px;
+            gap: 0.5rem;
+        }
+
+        .calendar-day-header {
+            text-align: center;
+            font-weight: 600;
+            padding: 0.75rem;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            font-size: 0.9rem;
+        }
+
+        .calendar-day {
+            min-height: 100px;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 0.5rem;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .calendar-day:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            transform: translateY(-2px);
+        }
+
+        .calendar-day.empty {
+            background-color: #f8f9fa;
+            cursor: default;
+        }
+
+        .calendar-day.empty:hover {
+            box-shadow: none;
+            transform: none;
+        }
+
+        .day-number {
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .day-badge {
+            font-size: 0.7rem;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+            margin-bottom: 0.25rem;
+            display: block;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .badge-profile {
+            background-color: #e3f2fd;
+            color: #1976d2;
+            border: 1px solid #1976d2;
+        }
+
+        .badge-rule {
+            background-color: #fff3e0;
+            color: #f57c00;
+            border: 1px solid #f57c00;
+        }
+
+        .badge-default {
+            background-color: #f3e5f5;
+            color: #7b1fa2;
+            border: 1px solid #7b1fa2;
+            font-weight: 600;
+        }
+
+        /* Table styles */
+        .table-responsive {
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table thead {
+            background-color: #f8f9fa;
+        }
+
+        .table tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .btn-delete {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        /* Modal styles */
+        .modal-header {
+            background: linear-gradient(135deg, #000051 0%, #2d1b69 100%);
+            color: white;
+        }
+
+        .modal-header .btn-close {
+            filter: invert(1);
+        }
+
+        /* Error states */
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-shield-alt" style="font-size: 2rem;"></i>
+            <span class="sidebar-logo-text">sicuro.it</span>
+        </div>
+
+        <ul class="sidebar-menu">
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Foglio presenze</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-th"></i>
+                    <span>Monitora</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="toggleSubmenu('profili-orari')">
+                    <i class="fas fa-clock"></i>
+                    <span>Gestione presenze</span>
+                </div>
+                <ul class="sidebar-submenu open" id="gestione-presenze">
+                    <li>
+                        <a href="prototipo-elenco-regole-timbratura-with-sidebar.html" class="sidebar-submenu-link">
+                            Regole di Timbratura
+                        </a>
+                    </li>
+                    <li>
+                        <a href="prototipo-elenco-regole-qualificazione-with-sidebar.html" class="sidebar-submenu-link">
+                            Regole di Qualificazione
+                        </a>
+                    </li>
+                    <li>
+                        <a href="prototipo-elenco-profili-giornalieri-with-sidebar.html" class="sidebar-submenu-link">
+                            Profili giornalieri
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="toggleSubmenu('orari-lavoro')">
+                    <i class="fas fa-clock"></i>
+                    <span>Orari di lavoro</span>
+                </div>
+                <ul class="sidebar-submenu open" id="gestione-presenze">
+                    <li>
+                        <a href="prototipo-elenco-profili-settimanali-with-sidebar.html" class="sidebar-submenu-link">
+                            Profili settimanali
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="toggleSubmenu('dipendenti')">
+                    <i class="fas fa-users"></i>
+                    <span>Dipendenti</span>
+                </div>
+                <ul class="sidebar-submenu open" id="dipendenti">
+                    <li>
+                        <a href="prototipo-dipendente-dettaglio-with-sidebar.html" class="sidebar-submenu-link active">
+                            Dettaglio dipendente
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-random"></i>
+                    <span>Flussi e richieste</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Altro</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-umbrella-beach"></i>
+                    <span>Festività</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span>Ratei di maturazione</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link">
+                    <i class="fas fa-building"></i>
+                    <span>Organizzazione</span>
+                </div>
+            </li>
+
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="toggleSubmenu('impostazioni')">
+                    <i class="fas fa-cog"></i>
+                    <span>Impostazioni</span>
+                </div>
+                <ul class="sidebar-submenu open" id="impostazioni">
+                    <li>
+                        <a href="prototipo-regole-presenza-with-sidebar.html" class="sidebar-submenu-link">
+                            Regole di presenza
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="header">
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-1">Massimo Aldini</h4>
+                    <small class="text-muted">Lunedì, 20 gennaio 2026 - 09:15</small>
+                </div>
+                <div>
+                    <span class="me-3">IT 🇮🇹</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="container-main">
+            <!-- Tabs -->
+            <ul class="nav nav-tabs" id="employeeTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="general-tab" data-bs-toggle="tab" data-bs-target="#general" type="button" role="tab">
+                        <i class="fas fa-user me-2"></i>Dati generali
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="profiles-tab" data-bs-toggle="tab" data-bs-target="#profiles" type="button" role="tab">
+                        <i class="fas fa-clock me-2"></i>Orario di lavoro
+                    </button>
+                </li>
+            </ul>
+
+            <div class="tab-content" id="employeeTabsContent">
+                <!-- Tab Dati Generali -->
+                <div class="tab-pane fade" id="general" role="tabpanel">
+                    <!-- Informazioni Anagrafiche -->
+                    <div class="row g-4">
+                        <div class="col-12 col-lg-6">
+                            <div class="card h-100">
+                                <div class="card-header-custom">
+                                    <h5 class="section-title">
+                                        <i class="fas fa-info-circle text-primary"></i>
+                                        Informazioni
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div class="row g-3">
+                                        <div class="col-12">
+                                            <label class="form-label text-muted mb-1">Nome:</label>
+                                            <p class="mb-2"><strong>Massimo</strong></p>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted mb-1">Cognome:</label>
+                                            <p class="mb-2"><strong>Aldini</strong></p>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted mb-1">Cod. fiscale:</label>
+                                            <p class="mb-2"><strong>DNNMSM83H15B819P</strong></p>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted mb-1">Email:</label>
+                                            <p class="mb-2"><strong>m.aldin@hrtools.it</strong></p>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted mb-1">Telefono:</label>
+                                            <p class="mb-2"><strong>-</strong></p>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted mb-1">Data di nascita:</label>
+                                            <p class="mb-2"><strong>22/11/1982</strong></p>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted mb-1">Luogo di nascita:</label>
+                                            <p class="mb-2"><strong>Roma</strong></p>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted mb-1">Genere:</label>
+                                            <p class="mb-2"><strong>M</strong></p>
+                                        </div>
+                                        <div class="col-12">
+                                            <label class="form-label text-muted mb-1">Abilitato:</label>
+                                            <p class="mb-2"><strong>Sì</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-lg-6">
+                            <div class="card h-100">
+                                <div class="card-header-custom">
+                                    <h5 class="section-title">
+                                        <i class="fas fa-briefcase text-primary"></i>
+                                        Dettagli
+                                    </h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <div class="row g-3">
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label text-muted mb-1">Supervisore:</label>
+                                            <p class="mb-2"><strong>Cristiana Baccolini</strong></p>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label text-muted mb-1">Unità principale:</label>
+                                            <p class="mb-2"><strong>Direzione HR</strong></p>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label text-muted mb-1">Profilo settimanale:</label>
+                                            <p class="mb-2"><strong>default</strong></p>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label text-muted mb-1">Posizione:</label>
+                                            <p class="mb-2"><strong>HR Specialist</strong></p>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label text-muted mb-1">Contratto:</label>
+                                            <p class="mb-2"><strong>Dipendente</strong></p>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label text-muted mb-1">Inizio contratto:</label>
+                                            <p class="mb-2"><strong>05/11/2017</strong></p>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label text-muted mb-1">Fine contratto:</label>
+                                            <p class="mb-2"><strong>-</strong></p>
+                                        </div>
+                                        <div class="col-12 col-md-6">
+                                            <label class="form-label text-muted mb-1">Lingua:</label>
+                                            <p class="mb-2"><strong>it</strong></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Tab Profili e presenze -->
+                <div class="tab-pane fade show active" id="profiles" role="tabpanel">
+                    <!-- Profili Settimanali -->
+                    <div class="card">
+                        <div class="card-header-custom">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h5 class="section-title">
+                                        <i class="fas fa-calendar-week text-success"></i>
+                                        Orari di lavoro
+                                    </h5>
+                                    <p class="section-description">
+                                        Assegna orari di lavoro al dipendente con periodo di validità
+                                    </p>
+                                </div>
+                                <button type="button" class="btn btn-success btn-sm" onclick="addProfileRow()">
+                                    <i class="fas fa-plus me-1"></i>Aggiungi orario
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="table-responsive">
+                                <table class="table table-hover" id="profileTable">
+                                    <thead>
+                                        <tr>
+                                            <th>Orario di lavoro</th>
+                                            <th>Data inizio</th>
+                                            <th>Data fine</th>
+                                            <th width="80">Azioni</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="profileTableBody">
+                                        <!-- Rows will be added dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendario Mensile -->
+                    <div class="card">
+                        <div class="card-header-custom">
+                            <h5 class="section-title">
+                                <i class="fas fa-calendar text-info"></i>
+                                Calendario Mensile
+                            </h5>
+                            <p class="section-description">
+                                Visualizza e modifica le assegnazioni giornaliere. Clicca su un giorno per modificare.
+                            </p>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="calendar-header">
+                                <h4 id="calendarMonthYear">Gennaio 2026</h4>
+                                <div class="calendar-nav">
+                                    <button onclick="goToPrevMonth()" title="Mese precedente">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </button>
+                                    <button onclick="goToNextMonth()" title="Mese successivo">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="calendar-grid" id="calendarGrid">
+                                <!-- Calendar will be rendered here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottone Salva -->
+                    <div class="row">
+                        <div class="col-12 text-end">
+                            <button type="button" class="btn btn-success btn-save" onclick="saveDipendente()">
+                                <i class="fa fa-save me-2"></i>Salva
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="alert alert-info mt-4">
+                <i class="fas fa-info-circle me-2"></i>
+                <strong>Prototipo navigabile:</strong> Questo prototipo simula la gestione completa di profili e presenze per un dipendente con sincronizzazione bidirezionale tra tabelle e calendario.
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal per modifica giorno -->
+    <div class="modal fade" id="dayModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalTitle">Modifica assegnazioni</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <input type="hidden" id="modalDate">
+
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Profilo settimanale attuale</label>
+                        <div class="p-3 bg-light rounded" id="currentProfileDisplay">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-calendar-day text-success me-2" style="font-size: 1.5rem;"></i>
+                                <div>
+                                    <div class="fw-bold" id="currentProfileName">-</div>
+                                    <small class="text-muted" id="currentProfileHours">-</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="modalProfile" class="form-label fw-bold">Modifica profilo giornaliero</label>
+                        <select class="form-select" id="modalProfile">
+                            <!-- <option value="">-- Mantieni profilo attuale --</option> -->
+                        </select>
+                        <small class="text-muted">Seleziona un profilo per sovrascrivere l'assegnazione corrente</small>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <small>
+                            <i class="fas fa-info-circle me-1"></i>
+                            La modifica del profilo giornaliero sovrascrive temporaneamente l'assegnazione dello storico per questo giorno specifico.
+                        </small>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-primary" onclick="saveDayAssignment()">Salva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global state
+        let currentYear = 2026;
+        let currentMonth = 0; // January (0-indexed)
+        let profileCounter = 0;
+        let ruleCounter = 0;
+
+        // Data storage
+        const profiles = [];
+        const rules = [];
+        const dayOverrides = {}; // Store manual day assignments
+
+        // Profile and Rule options
+        const availableProfiles = [
+            { id: 'prof_std', name: 'Impiegato Standard 40h' },
+            { id: 'prof_pt', name: 'Impiegato Part-time 20h' },
+            { id: 'prof_turni', name: 'Operaio Turni' }
+        ];
+
+        const availableDailyProfiles = [
+            { id: 'daily_standard', name: 'Standard 8h', hours: 8, color: '#28a745' },
+            { id: 'daily_parttime', name: 'Part-time 4h', hours: 4, color: '#ffc107' },
+            { id: 'daily_turno', name: 'Turno 6h', hours: 6, color: '#17a2b8' }
+        ];
+
+        const availableRules = [
+            { id: 'rule_flex', name: 'Regola standard', icon: 'fa-clock', typology: 'flexi' },
+            { id: 'rule_strict', name: 'Regola flessibile', icon: 'fa-lock', typology: 'fixed' },
+            { id: 'rule_smart', name: 'Regola Turni', icon: 'fa-user-check', typology: 'presence' }
+        ];
+
+        // Sidebar toggle
+        function toggleSubmenu(id) {
+            const submenu = document.getElementById(id);
+            submenu.classList.toggle('open');
+        }
+
+        // Add profile row
+        function addProfileRow() {
+            profileCounter++;
+            const tbody = document.getElementById('profileTableBody');
+
+            const row = document.createElement('tr');
+            row.id = `profile_row_${profileCounter}`;
+            row.dataset.id = profileCounter;
+
+            row.innerHTML = `
+                <td>
+                    <select class="form-select profile-select" onchange="updateCalendarFromTables()">
+                        <option value="">Seleziona profilo</option>
+                        ${availableProfiles.map(p => `<option value="${p.id}">${p.name}</option>`).join('')}
+                    </select>
+                </td>
+                <td>
+                    <input type="date" class="form-control date-start" onchange="validateProfileRow(${profileCounter})" value="2026-01-06">
+                </td>
+                <td>
+                    <input type="date" class="form-control date-end" onchange="validateProfileRow(${profileCounter})" value="2026-01-12">
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger btn-sm btn-delete" onclick="deleteProfileRow(${profileCounter})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+
+            // Add to profiles array
+            profiles.push({
+                id: profileCounter,
+                profileId: '',
+                dateStart: '2026-01-06',
+                dateEnd: '2026-01-12'
+            });
+
+            updateCalendarFromTables();
+        }
+
+        // Delete profile row
+        function deleteProfileRow(id) {
+            if (confirm('Sei sicuro di voler eliminare questo profilo?')) {
+                const row = document.getElementById(`profile_row_${id}`);
+                row.remove();
+
+                const index = profiles.findIndex(p => p.id === id);
+                if (index > -1) {
+                    profiles.splice(index, 1);
+                }
+
+                updateCalendarFromTables();
+            }
+        }
+
+        // Validate profile row
+        function validateProfileRow(id) {
+            const row = document.getElementById(`profile_row_${id}`);
+            const dateStart = row.querySelector('.date-start').value;
+            const dateEnd = row.querySelector('.date-end').value;
+
+            // Update profiles array
+            const profile = profiles.find(p => p.id === id);
+            if (profile) {
+                profile.dateStart = dateStart;
+                profile.dateEnd = dateEnd;
+                profile.profileId = row.querySelector('.profile-select').value;
+            }
+
+            // Check end >= start
+            if (dateStart && dateEnd && dateEnd < dateStart) {
+                row.querySelector('.date-end').classList.add('is-invalid');
+                alert('La data di fine deve essere successiva o uguale alla data di inizio');
+                return false;
+            }
+
+            // Check overlaps with other profiles
+            const overlap = checkProfileOverlap(id, dateStart, dateEnd);
+            if (overlap) {
+                row.querySelector('.date-start').classList.add('is-invalid');
+                row.querySelector('.date-end').classList.add('is-invalid');
+                alert('Attenzione: questo periodo si sovrappone con un altro profilo!');
+                return false;
+            }
+
+            // Remove error states
+            row.querySelector('.date-start').classList.remove('is-invalid');
+            row.querySelector('.date-end').classList.remove('is-invalid');
+
+            updateCalendarFromTables();
+            return true;
+        }
+
+        // Check profile overlap
+        function checkProfileOverlap(currentId, start, end) {
+            if (!start || !end) return false;
+
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            for (const profile of profiles) {
+                if (profile.id === currentId) continue;
+                if (!profile.dateStart || !profile.dateEnd) continue;
+
+                const pStart = new Date(profile.dateStart);
+                const pEnd = new Date(profile.dateEnd);
+
+                // Check if ranges overlap
+                if (startDate <= pEnd && endDate >= pStart) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Add rule row
+        function addRuleRow() {
+            ruleCounter++;
+            const tbody = document.getElementById('ruleTableBody');
+
+            const row = document.createElement('tr');
+            row.id = `rule_row_${ruleCounter}`;
+            row.dataset.id = ruleCounter;
+
+            row.innerHTML = `
+                <td>
+                    <select class="form-select rule-select" onchange="updateCalendarFromTables()">
+                        <option value="">Seleziona regola</option>
+                        ${availableRules.map(r => `<option value="${r.id}">${r.name}</option>`).join('')}
+                    </select>
+                </td>
+                <td>
+                    <input type="date" class="form-control date-start" onchange="validateRuleRow(${ruleCounter})">
+                </td>
+                <td>
+                    <input type="date" class="form-control date-end" onchange="validateRuleRow(${ruleCounter})">
+                </td>
+                <td class="text-center">
+                    <input type="checkbox" class="form-check-input default-check" onchange="toggleDefaultRule(${ruleCounter})" style="width: 20px; height: 20px;">
+                </td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-danger btn-sm btn-delete" onclick="deleteRuleRow(${ruleCounter})">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+
+            // Add to rules array
+            rules.push({
+                id: ruleCounter,
+                ruleId: '',
+                dateStart: '',
+                dateEnd: '',
+                isDefault: false
+            });
+
+            updateCalendarFromTables();
+        }
+
+        // Delete rule row
+        function deleteRuleRow(id) {
+            if (confirm('Sei sicuro di voler eliminare questa regola?')) {
+                const row = document.getElementById(`rule_row_${id}`);
+                row.remove();
+
+                const index = rules.findIndex(r => r.id === id);
+                if (index > -1) {
+                    rules.splice(index, 1);
+                }
+
+                updateCalendarFromTables();
+            }
+        }
+
+        // Validate rule row
+        function validateRuleRow(id) {
+            const row = document.getElementById(`rule_row_${id}`);
+            const dateStart = row.querySelector('.date-start').value;
+            const dateEnd = row.querySelector('.date-end').value;
+            const isDefault = row.querySelector('.default-check').checked;
+
+            // Update rules array
+            const rule = rules.find(r => r.id === id);
+            if (rule) {
+                rule.dateStart = dateStart;
+                rule.dateEnd = dateEnd;
+                rule.ruleId = row.querySelector('.rule-select').value;
+                rule.isDefault = isDefault;
+            }
+
+            // If default, dates should be empty
+            if (isDefault && (dateStart || dateEnd)) {
+                row.querySelector('.date-start').value = '';
+                row.querySelector('.date-end').value = '';
+                if (rule) {
+                    rule.dateStart = '';
+                    rule.dateEnd = '';
+                }
+                updateCalendarFromTables();
+                return true;
+            }
+
+            // If not default, check dates
+            if (!isDefault && dateStart && dateEnd) {
+                if (dateEnd < dateStart) {
+                    row.querySelector('.date-end').classList.add('is-invalid');
+                    alert('La data di fine deve essere successiva o uguale alla data di inizio');
+                    return false;
+                }
+
+                // Check overlaps
+                const overlap = checkRuleOverlap(id, dateStart, dateEnd);
+                if (overlap) {
+                    row.querySelector('.date-start').classList.add('is-invalid');
+                    row.querySelector('.date-end').classList.add('is-invalid');
+                    alert('Attenzione: questo periodo si sovrappone con un\'altra regola!');
+                    return false;
+                }
+            }
+
+            // Remove error states
+            row.querySelector('.date-start').classList.remove('is-invalid');
+            row.querySelector('.date-end').classList.remove('is-invalid');
+
+            updateCalendarFromTables();
+            return true;
+        }
+
+        // Check rule overlap
+        function checkRuleOverlap(currentId, start, end) {
+            if (!start || !end) return false;
+
+            const startDate = new Date(start);
+            const endDate = new Date(end);
+
+            for (const rule of rules) {
+                if (rule.id === currentId) continue;
+                if (rule.isDefault) continue; // Default doesn't overlap
+                if (!rule.dateStart || !rule.dateEnd) continue;
+
+                const rStart = new Date(rule.dateStart);
+                const rEnd = new Date(rule.dateEnd);
+
+                // Check if ranges overlap
+                if (startDate <= rEnd && endDate >= rStart) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        // Toggle default rule
+        function toggleDefaultRule(id) {
+            const row = document.getElementById(`rule_row_${id}`);
+            const checkbox = row.querySelector('.default-check');
+            const dateStart = row.querySelector('.date-start');
+            const dateEnd = row.querySelector('.date-end');
+
+            if (checkbox.checked) {
+                // Uncheck all other defaults
+                rules.forEach(r => {
+                    if (r.id !== id && r.isDefault) {
+                        r.isDefault = false;
+                        const otherRow = document.getElementById(`rule_row_${r.id}`);
+                        if (otherRow) {
+                            otherRow.querySelector('.default-check').checked = false;
+                            otherRow.querySelector('.date-start').disabled = false;
+                            otherRow.querySelector('.date-end').disabled = false;
+                        }
+                    }
+                });
+
+                // Disable dates for this row
+                dateStart.disabled = true;
+                dateEnd.disabled = true;
+                dateStart.value = '';
+                dateEnd.value = '';
+
+                // Update rule
+                const rule = rules.find(r => r.id === id);
+                if (rule) {
+                    rule.isDefault = true;
+                    rule.dateStart = '';
+                    rule.dateEnd = '';
+                }
+            } else {
+                // Enable dates
+                dateStart.disabled = false;
+                dateEnd.disabled = false;
+
+                // Update rule
+                const rule = rules.find(r => r.id === id);
+                if (rule) {
+                    rule.isDefault = false;
+                }
+            }
+
+            updateCalendarFromTables();
+        }
+
+        // Get day profile from storico
+        function getDayProfile(date) {
+            const dateStr = formatDateForComparison(date);
+
+            // Check if there's a manual override (daily profile)
+            if (dayOverrides[dateStr] && dayOverrides[dateStr].profile) {
+                const dailyProfile = availableDailyProfiles.find(p => p.id === dayOverrides[dateStr].profile);
+                if (dailyProfile) {
+                    return dailyProfile.name;
+                }
+                // Fallback to weekly profiles for backwards compatibility
+                const profile = availableProfiles.find(p => p.id === dayOverrides[dateStr].profile);
+                return profile ? profile.name : null;
+            }
+
+            // Check profiles in storico
+            for (const profile of profiles) {
+                if (!profile.dateStart || !profile.dateEnd || !profile.profileId) continue;
+
+                const start = new Date(profile.dateStart);
+                const end = new Date(profile.dateEnd);
+                const current = new Date(date);
+
+                if (current >= start && current <= end) {
+                    const p = availableProfiles.find(x => x.id === profile.profileId);
+                    return p ? p.name : null;
+                }
+            }
+
+            return null;
+        }
+
+        // Get day rule from storico
+        function getDayRule(date) {
+            const dateStr = formatDateForComparison(date);
+
+            // Check if there's a manual override
+            if (dayOverrides[dateStr] && dayOverrides[dateStr].rule) {
+                const rule = availableRules.find(r => r.id === dayOverrides[dateStr].rule);
+                return { name: rule ? rule.name : null, isDefault: false };
+            }
+
+            // Check rules in (non-default first)
+            for (const rule of rules) {
+                if (rule.isDefault) continue;
+                if (!rule.dateStart || !rule.dateEnd || !rule.ruleId) continue;
+
+                const start = new Date(rule.dateStart);
+                const end = new Date(rule.dateEnd);
+                const current = new Date(date);
+
+                if (current >= start && current <= end) {
+                    const r = availableRules.find(x => x.id === rule.ruleId);
+                    return { name: r ? r.name : null, isDefault: false };
+                }
+            }
+
+            // Check for default rule
+            const defaultRule = rules.find(r => r.isDefault && r.ruleId);
+            if (defaultRule) {
+                const r = availableRules.find(x => x.id === defaultRule.ruleId);
+                return { name: r ? r.name : null, isDefault: true };
+            }
+
+            return { name: null, isDefault: false };
+        }
+
+        // Format date for comparison
+        function formatDateForComparison(date) {
+            const d = new Date(date);
+            const year = d.getFullYear();
+            const month = String(d.getMonth() + 1).padStart(2, '0');
+            const day = String(d.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // Render calendar
+        // Helper function to get hours for a profile
+        function getProfileHours(profileName) {
+            // Map profile names to hours (simulated data)
+            const profileHoursMap = {
+                'Impiegato Standard 40h': 8,
+                'Impiegato Part-time 20h': 4,
+                'Operaio Turni': 6,
+                'prof_std': 8,
+                'prof_pt': 4,
+                'prof_turni': 6,
+                // Daily profiles
+                'daily_standard': 8,
+                'daily_parttime': 4,
+                'daily_turno': 6,
+                'Standard 8h': 8,
+                'Part-time 4h': 4,
+                'Turno 6h': 6
+            };
+            return profileHoursMap[profileName] || 0;
+        }
+
+        // Helper function to get profile color
+        function getProfileColor(profileNameOrId) {
+            // First, try to find in daily profiles by ID
+            const dailyProfile = availableDailyProfiles.find(p => p.id === profileNameOrId);
+            if (dailyProfile) {
+                return dailyProfile.color;
+            }
+
+            // Then try by name
+            const dailyProfileByName = availableDailyProfiles.find(p => p.name === profileNameOrId);
+            if (dailyProfileByName) {
+                return dailyProfileByName.color;
+            }
+
+            // Fallback to weekly profiles (for backwards compatibility)
+            const profileColorMap = {
+                'Impiegato Standard 40h': '#28a745',
+                'Impiegato Part-time 20h': '#ffc107',
+                'Operaio Turni': '#dc3545',
+                'prof_std': '#28a745',
+                'prof_pt': '#ffc107',
+                'prof_turni': '#dc3545'
+            };
+            return profileColorMap[profileNameOrId] || '#6c757d';
+        }
+
+        function renderCalendar(year, month) {
+            const grid = document.getElementById('calendarGrid');
+            grid.innerHTML = '';
+
+            // Update header
+            const monthNames = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+                               'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+            document.getElementById('calendarMonthYear').textContent = `${monthNames[month]} ${year}`;
+
+            // Day headers + Totale column
+            const dayHeaders = ['Lun', 'Mar', 'Mer', 'Gio', 'Ven', 'Sab', 'Dom', 'Tot'];
+            dayHeaders.forEach(day => {
+                const header = document.createElement('div');
+                header.className = 'calendar-day-header';
+                header.textContent = day;
+                header.style.fontWeight = day === 'Tot' ? '700' : '600';
+                grid.appendChild(header);
+            });
+
+            // Calculate first day and total days
+            const firstDay = new Date(year, month, 1);
+            const lastDay = new Date(year, month + 1, 0);
+            const firstDayOfWeek = (firstDay.getDay() + 6) % 7; // Monday = 0
+            const totalDays = lastDay.getDate();
+
+            // Get previous month last day
+            const prevMonthLastDay = new Date(year, month, 0);
+            const prevMonthTotalDays = prevMonthLastDay.getDate();
+
+            let weeklyHours = 0;
+            let weekStarted = false;
+
+            // Days from previous month
+            for (let i = 0; i < firstDayOfWeek; i++) {
+                const dayOfPrevMonth = prevMonthTotalDays - firstDayOfWeek + i + 1;
+                const date = new Date(year, month - 1, dayOfPrevMonth);
+                const cell = createDayCell(date, true, false);
+                grid.appendChild(cell);
+
+                // Count hours for weekly total
+                const profile = getDayProfile(date);
+                weeklyHours += getProfileHours(profile);
+                weekStarted = true;
+
+                // Add weekly total on Sunday
+                if (i === firstDayOfWeek - 1 && date.getDay() === 0) {
+                    addWeeklyTotal(grid, weeklyHours);
+                    weeklyHours = 0;
+                    weekStarted = false;
+                }
+            }
+
+            // Days of current month
+            for (let day = 1; day <= totalDays; day++) {
+                const date = new Date(year, month, day);
+                const cell = createDayCell(date, false, false);
+                grid.appendChild(cell);
+
+                // Count hours for weekly total
+                const profile = getDayProfile(date);
+                weeklyHours += getProfileHours(profile);
+
+                // Add weekly total on Sunday (day 0) or last day of month
+                if (date.getDay() === 0) {
+                    addWeeklyTotal(grid, weeklyHours);
+                    weeklyHours = 0;
+                    weekStarted = false;
+                } else {
+                    weekStarted = true;
+                }
+            }
+
+            // Days from next month to complete the grid
+            const totalCellsFilled = firstDayOfWeek + totalDays;
+            const remainingCells = totalCellsFilled % 7;
+
+            if (remainingCells > 0) {
+                const daysToAdd = 7 - remainingCells;
+                for (let day = 1; day <= daysToAdd; day++) {
+                    const date = new Date(year, month + 1, day);
+                    const cell = createDayCell(date, false, true);
+                    grid.appendChild(cell);
+
+                    // Count hours for weekly total
+                    const profile = getDayProfile(date);
+                    weeklyHours += getProfileHours(profile);
+                }
+
+                // Add final weekly total
+                addWeeklyTotal(grid, weeklyHours);
+            }
+        }
+
+        function createDayCell(date, isPrevMonth, isNextMonth) {
+            const cell = document.createElement('div');
+            cell.className = 'calendar-day' + (isPrevMonth || isNextMonth ? ' text-muted' : '');
+
+            // Check if date is in the past
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const cellDate = new Date(date);
+            cellDate.setHours(0, 0, 0, 0);
+            const isPast = cellDate < today;
+
+            // Set cursor and opacity based on past/future
+            if (isPast) {
+                cell.style.cursor = 'not-allowed';
+                cell.style.opacity = (isPrevMonth || isNextMonth) ? '0.3' : '0.6';
+            } else {
+                cell.onclick = () => onDayClick(date);
+                cell.style.cursor = 'pointer';
+                cell.style.opacity = (isPrevMonth || isNextMonth) ? '0.5' : '1';
+            }
+
+            const dayNumber = document.createElement('div');
+            dayNumber.className = 'day-number';
+            dayNumber.textContent = date.getDate();
+            cell.appendChild(dayNumber);
+
+            // Get profile and rule for this day
+            const profile = getDayProfile(date);
+            const ruleData = getDayRule(date);
+
+            if (profile) {
+                const hours = getProfileHours(profile);
+                const color = getProfileColor(profile);
+
+                // Get rule icon
+                let ruleIcon = '';
+                if (ruleData.name) {
+                    const rule = availableRules.find(r => r.name === ruleData.name);
+                    if (rule && rule.icon) {
+                        ruleIcon = `<i class="fas ${rule.icon} me-1"></i>`;
+                    }
+                }
+
+                const badge = document.createElement('span');
+                badge.className = 'day-badge badge-profile';
+                badge.innerHTML = `${ruleIcon}${hours}h`;
+                badge.style.backgroundColor = color;
+                badge.style.color = 'white';
+                badge.style.border = 'none';
+                badge.title = `${profile} - ${hours}h${ruleData.name ? ' | ' + ruleData.name : ''}`;
+                cell.appendChild(badge);
+            }
+
+            return cell;
+        }
+
+        function addWeeklyTotal(grid, hours) {
+            const totalCell = document.createElement('div');
+            totalCell.className = 'calendar-day';
+            totalCell.style.backgroundColor = '#f8f9fa';
+            totalCell.style.fontWeight = '700';
+            totalCell.style.display = 'flex';
+            totalCell.style.alignItems = 'center';
+            totalCell.style.justifyContent = 'center';
+            totalCell.style.fontSize = '1.2rem';
+            totalCell.textContent = `${hours}h`;
+            grid.appendChild(totalCell);
+        }
+
+        // Navigate to next month
+        function goToNextMonth() {
+            currentMonth++;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear++;
+            }
+            renderCalendar(currentYear, currentMonth);
+        }
+
+        // Navigate to previous month
+        function goToPrevMonth() {
+            currentMonth--;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear--;
+            }
+            renderCalendar(currentYear, currentMonth);
+        }
+
+        // On day click - open modal
+        function onDayClick(date) {
+            // Check if date is in the past
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const clickedDate = new Date(date);
+            clickedDate.setHours(0, 0, 0, 0);
+
+            if (clickedDate < today) {
+                // Disable modal for past dates
+                return;
+            }
+
+            const modal = new bootstrap.Modal(document.getElementById('dayModal'));
+            const dateStr = formatDateForComparison(date);
+
+            // Set modal title
+            const day = date.getDate();
+            const monthNames = ['Gennaio', 'Febbraio', 'Marzo', 'Aprile', 'Maggio', 'Giugno',
+                               'Luglio', 'Agosto', 'Settembre', 'Ottobre', 'Novembre', 'Dicembre'];
+            document.getElementById('modalTitle').textContent =
+                `Modifica assegnazioni - ${day} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+
+            // Store date
+            document.getElementById('modalDate').value = dateStr;
+
+            // Get current profile
+            const currentProfile = getDayProfile(date);
+            const currentProfileHours = getProfileHours(currentProfile);
+
+            // Display current profile
+            document.getElementById('currentProfileName').textContent = currentProfile || 'Nessun profilo assegnato';
+            document.getElementById('currentProfileHours').textContent = currentProfile ? `${currentProfileHours} ore` : '';
+
+            // Populate daily profile select
+            const profileSelect = document.getElementById('modalProfile');
+            profileSelect.innerHTML = "";
+            availableDailyProfiles.forEach(p => {
+                const option = document.createElement('option');
+                option.value = p.id;
+                option.textContent = `${p.name} (${p.hours}h)`;
+                profileSelect.appendChild(option);
+            });
+
+            // Set current value if overridden
+            if (dayOverrides[dateStr] && dayOverrides[dateStr].profile) {
+                profileSelect.value = dayOverrides[dateStr].profile;
+            }
+
+            modal.show();
+        }
+
+        // Save day assignment from modal
+        function saveDayAssignment() {
+            const dateStr = document.getElementById('modalDate').value;
+            const profileId = document.getElementById('modalProfile').value;
+
+            // Store override
+            if (profileId) {
+                // Preserve existing rule if present
+                const existingRule = dayOverrides[dateStr] ? dayOverrides[dateStr].rule : null;
+                dayOverrides[dateStr] = {
+                    profile: profileId,
+                    rule: existingRule
+                };
+            } else {
+                // Remove profile override but keep rule if present
+                if (dayOverrides[dateStr]) {
+                    if (dayOverrides[dateStr].rule) {
+                        dayOverrides[dateStr].profile = null;
+                    } else {
+                        delete dayOverrides[dateStr];
+                    }
+                }
+            }
+
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('dayModal'));
+            modal.hide();
+
+            // Update calendar
+            renderCalendar(currentYear, currentMonth);
+        }
+
+        // Update calendar from tables
+        function updateCalendarFromTables() {
+            renderCalendar(currentYear, currentMonth);
+        }
+
+        // Save dipendente
+        function saveDipendente() {
+            // Validate all data
+            let hasErrors = false;
+
+            // Validate profiles
+            profiles.forEach(p => {
+                if (!validateProfileRow(p.id)) {
+                    hasErrors = true;
+                }
+            });
+
+            // Validate rules
+            rules.forEach(r => {
+                if (!validateRuleRow(r.id)) {
+                    hasErrors = true;
+                }
+            });
+
+            if (hasErrors) {
+                alert('Correggi gli errori prima di salvare!');
+                return;
+            }
+
+            // Check that there's at least one default rule or all days have rules
+            const hasDefaultRule = rules.some(r => r.isDefault && r.ruleId);
+
+            if (!hasDefaultRule) {
+                const confirm = window.confirm('Non hai impostato una regola predefinita. Continuare?');
+                if (!confirm) return;
+            }
+
+            alert('Dati salvati con successo!\n\n(Questo è un prototipo - nessun dato è stato realmente salvato)');
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add sample data
+            addProfileRow();
+            const row1 = document.getElementById(`profile_row_${profileCounter}`);
+            row1.querySelector('.profile-select').value = 'prof_std';
+            row1.querySelector('.date-start').value = '2026-01-01';
+            row1.querySelector('.date-end').value = '2026-01-15';
+            validateProfileRow(profileCounter);
+
+            addProfileRow();
+            const row2 = document.getElementById(`profile_row_${profileCounter}`);
+            row2.querySelector('.profile-select').value = 'prof_pt';
+            row2.querySelector('.date-start').value = '2026-01-16';
+            row2.querySelector('.date-end').value = '2026-01-31';
+            validateProfileRow(profileCounter);
+
+            addRuleRow();
+            const ruleRow1 = document.getElementById(`rule_row_${ruleCounter}`);
+            ruleRow1.querySelector('.rule-select').value = 'rule_flex';
+            ruleRow1.querySelector('.date-start').value = '2026-01-01';
+            ruleRow1.querySelector('.date-end').value = '2026-01-10';
+            validateRuleRow(ruleCounter);
+
+            addRuleRow();
+            const ruleRow2 = document.getElementById(`rule_row_${ruleCounter}`);
+            ruleRow2.querySelector('.rule-select').value = 'rule_smart';
+            ruleRow2.querySelector('.default-check').checked = true;
+            toggleDefaultRule(ruleCounter);
+
+            // Render initial calendar
+            renderCalendar(currentYear, currentMonth);
+        });
+    </script>
+
+    <!-- Modal Gestione Avanzata Regole di Timbratura -->
+    <div class="modal fade" id="rulesModal" tabindex="-1" aria-labelledby="rulesModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="rulesModalLabel">
+                        <i class="fas fa-fingerprint text-warning me-2"></i>
+                        Gestione Avanzata Regole di Timbratura
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="alert alert-info mb-3">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Puoi assegnare regole con date specifiche. Una regola può essere impostata come predefinita.
+                    </div>
+
+                    <div class="mb-3">
+                        <button type="button" class="btn btn-success btn-sm" onclick="addRuleRow()">
+                            <i class="fas fa-plus me-1"></i>Aggiungi regola con date
+                        </button>
+                    </div>
+
+                    <div class="table-responsive">
+                        <table class="table table-hover table-sm" id="ruleTable">
+                            <thead>
+                                <tr>
+                                    <th>Regola</th>
+                                    <th>Data inizio</th>
+                                    <th>Data fine</th>
+                                    <th width="100">Default</th>
+                                    <th width="80">Azioni</th>
+                                </tr>
+                            </thead>
+                            <tbody id="ruleTableBody">
+                                <!-- Rows will be added dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Salva modifiche</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

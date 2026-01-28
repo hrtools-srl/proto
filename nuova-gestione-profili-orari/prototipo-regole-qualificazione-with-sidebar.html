@@ -193,22 +193,48 @@
             <li class="sidebar-item">
                 <div class="sidebar-link" onclick="toggleSubmenu('profili-orari')">
                     <i class="fas fa-clock"></i>
-                    <span>Profili orari</span>
+                    <span>Gestione presenze</span>
                 </div>
-                <ul class="sidebar-submenu open" id="profili-orari">
-                    <li>
-                        <a href="prototipo-profilo-settimanale-with-sidebar.html" class="sidebar-submenu-link">
-                            Profili settimanali
+                <ul class="sidebar-submenu open" id="gestione-presenze">
+<li>
+                        <a href="prototipo-elenco-regole-timbratura-with-sidebar.html" class="sidebar-submenu-link">
+                            Regole di Timbratura
                         </a>
                     </li>
                     <li>
-                        <a href="prototipo-profilo-giornaliero-with-sidebar.html" class="sidebar-submenu-link">
+                        <a href="prototipo-elenco-regole-qualificazione-with-sidebar.html" class="sidebar-submenu-link active">
+                            Regole di Qualificazione
+                        </a>
+                    </li>
+                    <li>
+                        <a href="prototipo-elenco-profili-giornalieri-with-sidebar.html" class="sidebar-submenu-link">
                             Profili giornalieri
                         </a>
                     </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="toggleSubmenu('orari-lavoro')">
+                    <i class="fas fa-clock"></i>
+                    <span>Orari di lavoro</span>
+                </div>
+                <ul class="sidebar-submenu open" id="gestione-presenze">
                     <li>
-                        <a href="prototipo-regole-qualificazione-with-sidebar.html" class="sidebar-submenu-link active">
-                            Regole di qualificazione
+                        <a href="prototipo-elenco-profili-settimanali-with-sidebar.html" class="sidebar-submenu-link">
+                            Profili settimanali
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            <li class="sidebar-item">
+                <div class="sidebar-link" onclick="toggleSubmenu('dipendenti')">
+                    <i class="fas fa-users"></i>
+                    <span>Dipendenti</span>
+                </div>
+                <ul class="sidebar-submenu open" id="dipendenti">
+                    <li>
+                        <a href="prototipo-dipendente-dettaglio-with-sidebar.html" class="sidebar-submenu-link">
+                            Dettaglio dipendente
                         </a>
                     </li>
                 </ul>
@@ -279,7 +305,7 @@
         </div>
 
         <div class="container-main">
-            <h2 class="mb-4">Modifica Regola di qualificazione</h2>
+            <h2 class="mb-4">Modifica Regola di Qualificazione</h2>
 
             <!-- Card principale -->
             <div class="card">
