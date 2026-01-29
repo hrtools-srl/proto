@@ -327,7 +327,7 @@
                                 <div class="form-check mb-3">
                                     <input class="form-check-input" type="radio" name="modalita_applicazione" id="modalita_eccesso" value="eccesso" checked onchange="toggleModalitaFields()">
                                     <label class="form-check-label" for="modalita_eccesso">
-                                        <strong>Qualifica orari in eccesso</strong>
+                                        <strong>Ore in eccesso (Straordinari)</strong>
                                         <br>
                                         <small class="text-muted">Analizza le timbrature e qualifica il tempo lavorato oltre l'orario normale (es. straordinari)</small>
                                     </label>
@@ -336,7 +336,7 @@
                                 <div class="form-check">
                                     <input class="form-check-input" type="radio" name="modalita_applicazione" id="modalita_automatica" value="automatica" onchange="toggleModalitaFields()">
                                     <label class="form-check-label" for="modalita_automatica">
-                                        <strong>Aggiungi ore automaticamente</strong>
+                                        <strong>Ore mancanti</strong>
                                         <br>
                                         <small class="text-muted">Aggiunge automaticamente ore di permesso/lavoro senza analizzare le timbrature (es. permesso venerdì 39h)</small>
                                     </label>
@@ -375,10 +375,18 @@
                         </div>
 
                         <!-- Durata Slot (min) / Ore da aggiungere (min) -->
-                        <div class="col-12 col-md-6">
+                        <div class="col-12 col-md-3">
                             <div class="form-floating">
-                                <input type="number" class="form-control" id="durata" value="30" min="0" step="1" placeholder="Durata Slot (min)">
-                                <label for="durata" id="durata_label">Durata Slot (min)</label>
+                                <input type="number" class="form-control" id="durata" value="30" min="0" step="1" placeholder="Minuti da aggiungere">
+                                <label for="durata" id="durata_label">Minuti da aggiungere</label>
+                            </div>
+                        </div>
+
+                        <!-- Fino a (Slot) -->
+                        <div class="col-12 col-md-3">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="fino_a_slot" value="3" min="0" step="1" placeholder="Fino a (Slot)">
+                                <label for="fino_a_slot">Fino a (Slot)</label>
                             </div>
                         </div>
 

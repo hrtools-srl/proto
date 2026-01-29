@@ -495,6 +495,11 @@
                         <i class="fas fa-clock me-2"></i>Orario di lavoro
                     </button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="smartworking-tab" data-bs-toggle="tab" data-bs-target="#smartworking" type="button" role="tab">
+                        <i class="fas fa-home me-2"></i>Smart Working Personalizzato
+                    </button>
+                </li>
             </ul>
 
             <div class="tab-content" id="employeeTabsContent">
@@ -676,6 +681,48 @@
                     <div class="row">
                         <div class="col-12 text-end">
                             <button type="button" class="btn btn-success btn-save" onclick="saveDipendente()">
+                                <i class="fa fa-save me-2"></i>Salva
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tab Smart Working Personalizzato -->
+                <div class="tab-pane fade" id="smartworking" role="tabpanel">
+                    <div class="card">
+                        <div class="card-header-custom">
+                            <h5 class="section-title">
+                                <i class="fas fa-home text-info"></i>
+                                Configurazione Smart Working
+                            </h5>
+                            <p class="section-description">
+                                Imposta i parametri personalizzati per lo smart working del dipendente
+                            </p>
+                        </div>
+                        <div class="card-body p-4">
+                            <div class="row g-3">
+                                <div class="col-12 col-md-4">
+                                    <label for="giorni_sw_settimanali" class="form-label fw-semibold text-muted small mb-1">Giorni smartworking settimanali</label>
+                                    <input type="number" class="form-control form-control-lg" id="giorni_sw_settimanali" value="2" min="0" max="7" step="1">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="giorni_sw_mensili" class="form-label fw-semibold text-muted small mb-1">Giorni smartworking mensili</label>
+                                    <input type="number" class="form-control form-control-lg" id="giorni_sw_mensili" value="8" min="0" max="31" step="1">
+                                </div>
+
+                                <div class="col-12 col-md-4">
+                                    <label for="preavviso_richiesta" class="form-label fw-semibold text-muted small mb-1">Preavviso richiesta smartworking (giorni)</label>
+                                    <input type="number" class="form-control form-control-lg" id="preavviso_richiesta" value="1" min="0" max="30" step="1">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottone Salva -->
+                    <div class="row">
+                        <div class="col-12 text-end">
+                            <button type="button" class="btn btn-success btn-save" onclick="saveSmartworking()">
                                 <i class="fa fa-save me-2"></i>Salva
                             </button>
                         </div>
@@ -1474,6 +1521,11 @@
         // Update calendar from tables
         function updateCalendarFromTables() {
             renderCalendar(currentYear, currentMonth);
+        }
+
+        // Save smartworking configuration
+        function saveSmartworking() {
+            alert('Configurazione Smart Working salvata con successo!\n\n(Questo è un prototipo - nessun dato è stato realmente salvato)');
         }
 
         // Save dipendente
